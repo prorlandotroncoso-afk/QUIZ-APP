@@ -120,10 +120,6 @@ def quiz(quiz_id):
     </h1>
 
     <form method="post" action="https://quiz-app-e6e9.onrender.com/submit">
-    """
-
-    html += """
-    <form method="post" action="/submit">
 
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
@@ -136,8 +132,10 @@ def quiz(quiz_id):
     """
 
     for i, q in enumerate(quiz):
-        html += f"<div style='background:white;padding:15px;margin:10px;border-radius:8px;'>"
-        html += f"<p><b>{q['pregunta']}</b></p>"
+        html += f"""
+        <div style='background:white;padding:15px;margin:10px;border-radius:8px;'>
+        <p><b>{q['pregunta']}</b></p>
+        """
 
         for op in q["opciones"]:
             html += f"""
@@ -150,13 +148,13 @@ def quiz(quiz_id):
     <input type="hidden" name="quiz_id" value="{quiz_id}">
     <button type="submit">Enviar respuestas</button>
     </form>
+
     </div>
     </body>
     </html>
     """
 
     return html
-
 # =========================
 # 📊 RESULTADOS
 # =========================
