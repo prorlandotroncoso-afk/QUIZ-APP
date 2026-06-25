@@ -20,7 +20,7 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
-GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4QJ8KLLKM-3ZN0iNqNedfqisKS5H_iAYhdif1g_MKaAP7KVrOAMcKlpNbHSABSsz3aw/exec"
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFvyZYyy1qzYit9sfNc7AVbfIU3eLLYcveQtTJLNl6ydmhHMNhNRChY-1Z02PJ7mbEtA/exec"
 # almacenamiento temporal
 quizzes = {}
 
@@ -186,23 +186,26 @@ def submit():
          "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M")
     }
 
-    try:
-        requests.post(
-            GOOGLE_SCRIPT_URL,
-            data={
-                "fecha": data["Fecha"],
-                "nombre": data["Nombre"],
-                "email": data["Email"],
-                "equipo": data["Equipo"],
-                "puntaje": data["Puntaje"],
-                "total": data["Total"],
-                "porcentaje": data["Porcentaje"]
-             },
-            timeout=10
-        )
+ try:
+    r = requests.post(
+        GOOGLE_SCRIPT_URL,
+        data={
+            "fecha": data["Fecha"],
+            "nombre": data["Nombre"],
+            "email": data["Email"],
+            "equipo": data["Equipo"],
+            "puntaje": data["Puntaje"],
+            "total": data["Total"],
+            "porcentaje": data["Porcentaje"]
+        },
+        timeout=10
+    )
 
-    except Exception as e:
-        print("ERROR SHEETS:", e)
+    print("STATUS:", r.status_code)
+    print("RESPONSE:", r.text)
+
+except Exception as e:
+    print("ERROR SHEETS:", e)
 
     return f"""
     <h2>Resultado</h2>
