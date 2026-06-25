@@ -122,7 +122,9 @@ def quiz(quiz_id):
     <form method="post" action="https://quiz-app-e6e9.onrender.com/submit">
     """
 
-    html += """
+   html += """
+<form method="post" action="/submit">
+
 <label>Email:</label><br>
 <input type="email" name="email" required><br><br>
 
