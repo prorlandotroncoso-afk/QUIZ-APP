@@ -122,12 +122,15 @@ def quiz(quiz_id):
     """
 
     html += """
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
+<label>Email:</label><br>
+<input type="email" name="email" required><br><br>
 
-    <label>Nombre:</label><br>
-    <input type="text" name="nombre" required><br><br>
-    """
+<label>Nombre:</label><br>
+<input type="text" name="nombre" required><br><br>
+
+<label>Equipo:</label><br>
+<input type="text" name="equipo" required><br><br>
+"""
 
     for i, q in enumerate(quiz):
         html += f"<div style='background:white;padding:15px;margin:10px;border-radius:8px;'>"
@@ -159,6 +162,7 @@ def quiz(quiz_id):
 def submit():
     nombre = request.form["nombre"]
     email = request.form["email"]
+    equipo = request.form["equipo"]
     quiz_id = request.form["quiz_id"]
 
     quiz = quizzes.get(quiz_id)
@@ -172,12 +176,13 @@ def submit():
     porcentaje = round((score / total) * 100, 2)
 
     data = {
-        "Nombre": nombre,
-        "Email": email,
-        "Puntaje": score,
-        "Total": total,
-        "Porcentaje": porcentaje,
-        "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M")
+         "Nombre": nombre,
+         "Email": email,
+         "Equipo": equipo,
+         "Puntaje": score,
+         "Total": total,
+         "Porcentaje": porcentaje,
+         "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M")
     }
 
     try:
