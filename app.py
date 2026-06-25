@@ -206,14 +206,14 @@ def submit():
         print("GOOGLE STATUS:", r.status_code)
         print("GOOGLE RESPONSE:", r.text)
 
-    except Exception as e:
-        print("ERROR SHEETS:", e)
+        except Exception as e:
+            print("ERROR SHEETS:", e)
 
-    return f"""
-    <h2>DEBUG</h2>
-    <p>Status Google: {r.status_code}</p>
-    <pre>{r.text}</pre>
-    """
+        return f"""
+        <h2>DEBUG</h2>
+        <p>Status Google: {r.status_code}</p>
+        <pre>{r.text}</pre>
+        """
 
     except Exception as e:
         print("ERROR SHEETS:", e)
