@@ -188,22 +188,22 @@ def submit():
 
     try:
 
-    requests.post(
-        GOOGLE_SCRIPT_URL,
-        json={
-            "fecha": data["Fecha"],
-            "nombre": data["Nombre"],
-            "email": data["Email"],
-            "equipo": data["Equipo"],
-            "puntaje": data["Puntaje"],
-            "total": data["Total"],
-            "porcentaje": data["Porcentaje"]
-        },
-        timeout=10
-    )
+        requests.post(
+            GOOGLE_SCRIPT_URL,
+            json={
+                "fecha": data["Fecha"],
+                "nombre": data["Nombre"],
+                "email": data["Email"],
+                "equipo": data["Equipo"],
+                "puntaje": data["Puntaje"],
+                "total": data["Total"],
+                "porcentaje": data["Porcentaje"]
+           },
+           timeout=10
+        )
 
-except Exception as e:
-    print("ERROR SHEETS:", e)
+   except Exception as e:
+       print("ERROR SHEETS:", e)
 
     return f"""
     <h2>Resultado</h2>
