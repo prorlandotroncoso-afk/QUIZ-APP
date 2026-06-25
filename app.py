@@ -119,7 +119,7 @@ def quiz(quiz_id):
     Evaluación
     </h1>
 
-    <form method="post" action="/submit">
+    <form method="post" action="https://quiz-app-e6e9.onrender.com/submit">
     """
 
     html += """
