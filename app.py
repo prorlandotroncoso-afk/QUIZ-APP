@@ -120,7 +120,9 @@ def quiz(quiz_id):
     </h1>
 
     <form method="post" action="/submit">
+    """
 
+    html += """
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
 
