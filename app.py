@@ -20,6 +20,7 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMeTR17EUsgv1V0yPnwyYwJ6wElDb-ht90Qgs3LoEwzH2C9tdbxcAuj9c0PD6hUmdduA/exec"
 # almacenamiento temporal
 quizzes = {}
 
@@ -186,12 +187,23 @@ def submit():
     }
 
     try:
-        df = pd.read_excel("resultados.xlsx")
-        df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
-    except:
-        df = pd.DataFrame([data])
 
-    df.to_excel("resultados.xlsx", index=False)
+    requests.post(
+        GOOGLE_SCRIPT_URL,
+        json={
+            "fecha": data["Fecha"],
+            "nombre": data["Nombre"],
+            "email": data["Email"],
+            "equipo": data["Equipo"],
+            "puntaje": data["Puntaje"],
+            "total": data["Total"],
+            "porcentaje": data["Porcentaje"]
+        },
+        timeout=10
+    )
+
+except Exception as e:
+    print("ERROR SHEETS:", e)
 
     return f"""
     <h2>Resultado</h2>
