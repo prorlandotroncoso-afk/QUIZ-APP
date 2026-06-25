@@ -191,7 +191,7 @@ def submit():
     try:
             r = requests.post(
                 "https://script.google.com/macros/s/AKfycbybOrZVzoZYjIvagGcb7wfQwevVM93wIq4AMijPdLG82HXwXwxuC0p8pK4m-p4LACEYPg/exec",
-                data={
+                json={
                     "fecha": data["Fecha"],
                     "nombre": data["Nombre"],
                     "email": data["Email"],
