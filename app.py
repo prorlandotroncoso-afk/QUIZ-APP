@@ -20,7 +20,7 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
-GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxja5k7hBQaK8OcvAUwF3yW64z5_xKd6XMRLvfj63eO8bHCBSHgQtvfjXNIMzylpieMIA/exec"
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9skcjBx7873MaHykvjPqa3j8aB7zxzxB7DMr7TlmZ2VgsUPhfwXZZVejAl_KdEcSiug/exec"
 # almacenamiento temporal
 quizzes = {}
 
