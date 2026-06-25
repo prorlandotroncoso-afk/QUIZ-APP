@@ -122,18 +122,18 @@ def quiz(quiz_id):
     <form method="post" action="https://quiz-app-e6e9.onrender.com/submit">
     """
 
-   html += """
-<form method="post" action="/submit">
+    html += """
+    <form method="post" action="/submit">
 
-<label>Email:</label><br>
-<input type="email" name="email" required><br><br>
+    <label>Email:</label><br>
+    <input type="email" name="email" required><br><br>
 
-<label>Nombre:</label><br>
-<input type="text" name="nombre" required><br><br>
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" required><br><br>
 
-<label>Equipo:</label><br>
-<input type="text" name="equipo" required><br><br>
-"""
+    <label>Equipo:</label><br>
+    <input type="text" name="equipo" required><br><br>
+    """
 
     for i, q in enumerate(quiz):
         html += f"<div style='background:white;padding:15px;margin:10px;border-radius:8px;'>"
