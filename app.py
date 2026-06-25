@@ -110,7 +110,7 @@ def quiz(quiz_id):
 
     quiz = quizzes[quiz_id]
 
-    html = """
+    html = f"""
     <html>
     <body style="background:#f0ebf8;font-family:Arial;">
     <div style="width:60%;margin:auto;">
@@ -120,9 +120,7 @@ def quiz(quiz_id):
     </h1>
 
     <form method="post" action="/submit">
-    """
 
-    html += """
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
 
@@ -135,7 +133,7 @@ def quiz(quiz_id):
 
     for i, q in enumerate(quiz):
         html += f"""
-        <div style='background:white;padding:15px;margin:10px;border-radius:8px;'>
+        <div style="background:white;padding:15px;margin:10px;border-radius:8px;">
         <p><b>{q['pregunta']}</b></p>
         """
 
