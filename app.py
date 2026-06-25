@@ -189,7 +189,7 @@ def submit():
     try:
         requests.post(
             GOOGLE_SCRIPT_URL,
-            json={
+            data={
                 "fecha": data["Fecha"],
                 "nombre": data["Nombre"],
                 "email": data["Email"],
