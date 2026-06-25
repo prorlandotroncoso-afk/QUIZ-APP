@@ -108,19 +108,27 @@ def quiz(quiz_id):
     if quiz_id not in quizzes:
         return "Quiz no encontrado"
 
-    quiz = quizzes[quiz_id]
+    quiz_data = quizzes[quiz_id]
 
-    html = f"""
+    form_start = """
+    <form method="post" action="/submit">
+    """
+
+    form_end = """
+    <input type="hidden" name="quiz_id" value="{quiz_id}">
+    <button type="submit">Enviar respuestas</button>
+    </form>
+    """
+
+    body = """
     <html>
     <body style="background:#f0ebf8;font-family:Arial;">
     <div style="width:60%;margin:auto;">
+    <h1>Evaluación</h1>
+    """
 
-    <h1 style="background:#673ab7;color:white;padding:20px;border-radius:8px;">
-    Evaluación
-    </h1>
-
-    <form method="post" action="/submit">
-
+    body += form_start
+    body += """
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
 
@@ -131,30 +139,24 @@ def quiz(quiz_id):
     <input type="text" name="equipo" required><br><br>
     """
 
-    for i, q in enumerate(quiz):
-        html += f"""
-        <div style="background:white;padding:15px;margin:10px;border-radius:8px;">
-        <p><b>{q['pregunta']}</b></p>
-        """
+    for i, q in enumerate(quiz_data):
+        body += f"<div><p><b>{q['pregunta']}</b></p>"
 
         for op in q["opciones"]:
-            html += f"""
-            <input type="radio" name="q{i}" value="{op}" required> {op}<br>
-            """
+            body += f'<input type="radio" name="q{i}" value="{op}" required> {op}<br>'
 
-        html += "</div>"
+        body += "</div>"
 
-    html += f"""
+    body += f"""
     <input type="hidden" name="quiz_id" value="{quiz_id}">
-    <button type="submit">Enviar respuestas</button>
+    <button type="submit">Enviar</button>
     </form>
-
     </div>
     </body>
     </html>
     """
 
-    return html
+    return body
 # =========================
 # 📊 RESULTADOS
 # =========================
