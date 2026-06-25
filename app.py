@@ -54,7 +54,7 @@ Formato obligatorio:
 
 No agregues explicaciones.
 
-Generá 5 preguntas.
+Generá 15 preguntas.
 
 Basado en:
 {text[:2000]}
