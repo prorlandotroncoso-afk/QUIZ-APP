@@ -171,12 +171,11 @@ def submit():
     quiz = quizzes.get(quiz_id)
 
     score = 0
-detalle = ""
+    detalle = ""
+    for i, q in enumerate(quiz):
 
-for i, q in enumerate(quiz):
-
-    respuesta_usuario = request.form.get(f"q{i}")
-    correcta = q["correcta"]
+        respuesta_usuario = request.form.get(f"q{i}")
+        correcta = q["correcta"]
 
     if respuesta_usuario == correcta:
         score += 1
