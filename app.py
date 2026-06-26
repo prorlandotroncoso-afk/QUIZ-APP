@@ -176,7 +176,7 @@ def submit():
             score += 1
 
     total = len(quiz)
-    porcentaje = round((score / total) * 100, 2)
+    porcentaje = f"{round((score / total) * 100, 2)}%"
 
     data = {
          "Nombre": nombre,
