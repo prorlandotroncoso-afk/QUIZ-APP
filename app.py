@@ -238,9 +238,21 @@ def submit():
             print("ERROR SHEETS:", e)
 
     return f"""
-    <h2>DEBUG</h2>
-    <p>Status Google: {r.status_code}</p>
-    <pre>{r.text}</pre>
+    <html>
+    <body style="background:#f0ebf8;font-family:Arial;">
+    <div style="width:70%;margin:auto;">
+    <h1 style="background:#673ab7;color:white;padding:20px;border-radius:8px;">
+    Resultado
+    </h1>
+    <h2>{nombre}</h2>
+    <h3>Puntaje: {score}/{total} ({porcentaje})</h3>
+    <hr>
+    {detalle}
+    <br>
+    <a href="/admin">Volver</a>
+    </div>
+    </body>
+    </html>
     """
 
 # =========================
