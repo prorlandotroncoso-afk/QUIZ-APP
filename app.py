@@ -171,9 +171,38 @@ def submit():
     quiz = quizzes.get(quiz_id)
 
     score = 0
-    for i, q in enumerate(quiz):
-        if request.form.get(f"q{i}") == q["correcta"]:
-            score += 1
+detalle = ""
+
+for i, q in enumerate(quiz):
+
+    respuesta_usuario = request.form.get(f"q{i}")
+    correcta = q["correcta"]
+
+    if respuesta_usuario == correcta:
+        score += 1
+        color = "#d4edda"
+        icono = "✅"
+    else:
+        color = "#f8d7da"
+        icono = "❌"
+
+    detalle += f"""
+    <div style="
+        background:{color};
+        padding:15px;
+        margin:15px 0;
+        border-radius:8px;
+    ">
+        <h3>{icono} Pregunta {i+1}</h3>
+
+        <p><b>{q['pregunta']}</b></p>
+
+        <p><b>Tu respuesta:</b> {respuesta_usuario}</p>
+
+        <p><b>Respuesta correcta:</b> {correcta}</p>
+
+    </div>
+    """
 
     total = len(quiz)
     porcentaje = f"{round((score / total) * 100, 2)}%"
