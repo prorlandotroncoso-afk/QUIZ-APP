@@ -240,20 +240,24 @@ def submit():
 
     except Exception as e:
             print("ERROR SHEETS:", e)
-
+    
     return f"""
     <html>
     <body style="background:#f0ebf8;font-family:Arial;">
     <div style="width:70%;margin:auto;">
+    
     <h1 style="background:#673ab7;color:white;padding:20px;border-radius:8px;">
-    Resultado
+    Resultado del examen
     </h1>
+    
     <h2>{nombre}</h2>
+    
     <h3>Puntaje: {score}/{total} ({porcentaje})</h3>
+    
     <hr>
+    
     {detalle}
-    <br>
-    <a href="/admin">Volver</a>
+    
     </div>
     </body>
     </html>
