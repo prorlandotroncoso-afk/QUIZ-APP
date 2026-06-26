@@ -169,49 +169,43 @@ def submit():
     quiz_id = request.form["quiz_id"]
 
     quiz = quizzes.get(quiz_id)
-
-score = 0
-detalle = ""
-
-for i, q in enumerate(quiz):
-
-    respuesta_usuario = request.form.get(f"q{i}")
-    correcta = q["correcta"]
-
-    # detectar en blanco
-    if not respuesta_usuario:
-        estado = "blanco"
-        icono = "🟡"
-        color = "#fff3cd"
-
-    elif respuesta_usuario == correcta:
-        score += 1
-        estado = "correcta"
-        icono = "🟢"
-        color = "#d4edda"
-
-    else:
-        estado = "incorrecta"
-        icono = "🔴"
-        color = "#f8d7da"
-
-    detalle += f"""
-    <div style="
-        background:{color};
-        padding:15px;
-        margin:15px 0;
-        border-radius:8px;
-    ">
-        <h3>{icono} Pregunta {i+1}</h3>
-
-        <p><b>{q['pregunta']}</b></p>
-
-        <p><b>Tu respuesta:</b> {respuesta_usuario if respuesta_usuario else "Sin responder"}</p>
-
-        <p><b>Respuesta correcta:</b> {correcta}</p>
-
-    </div>
-    """
+    score = 0
+    detalle = ""
+    for i, q in enumerate(quiz):
+        respuesta_usuario = request.form.get(f"q{i}")
+        correcta = q["correcta"]
+        
+        # detectar en blanco
+        if not respuesta_usuario:
+            estado = "blanco"
+            icono = "🟡"
+            color = "#fff3cd"
+        elif respuesta_usuario == correcta:
+            score += 1
+            estado = "correcta"
+            icono = "🟢"
+            color = "#d4edda"
+        else:
+             estado = "incorrecta"
+             icono = "🔴"
+             color = "#f8d7da"
+        detalle += f"""
+        <div style="
+            background:{color};
+            padding:15px;
+            margin:15px 0;
+            border-radius:8px;
+        ">
+            <h3>{icono} Pregunta {i+1}</h3>
+            
+            <p><b>{q['pregunta']}</b></p>
+            
+            <p><b>Tu respuesta:</b> {respuesta_usuario if respuesta_usuario else "Sin responder"}</p>
+            
+            <p><b>Respuesta correcta:</b> {correcta}</p>
+        
+        </div>
+        """
 
     total = len(quiz)
     porcentaje = f"{round((score / total) * 100, 2)}%"
