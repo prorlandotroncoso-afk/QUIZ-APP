@@ -170,20 +170,30 @@ def submit():
 
     quiz = quizzes.get(quiz_id)
 
-    score = 0
-    detalle = ""
-    for i, q in enumerate(quiz):
+score = 0
+detalle = ""
 
-        respuesta_usuario = request.form.get(f"q{i}")
-        correcta = q["correcta"]
+for i, q in enumerate(quiz):
 
-    if respuesta_usuario == correcta:
+    respuesta_usuario = request.form.get(f"q{i}")
+    correcta = q["correcta"]
+
+    # detectar en blanco
+    if not respuesta_usuario:
+        estado = "blanco"
+        icono = "🟡"
+        color = "#fff3cd"
+
+    elif respuesta_usuario == correcta:
         score += 1
+        estado = "correcta"
+        icono = "🟢"
         color = "#d4edda"
-        icono = "✅"
+
     else:
+        estado = "incorrecta"
+        icono = "🔴"
         color = "#f8d7da"
-        icono = "❌"
 
     detalle += f"""
     <div style="
@@ -196,7 +206,7 @@ def submit():
 
         <p><b>{q['pregunta']}</b></p>
 
-        <p><b>Tu respuesta:</b> {respuesta_usuario}</p>
+        <p><b>Tu respuesta:</b> {respuesta_usuario if respuesta_usuario else "Sin responder"}</p>
 
         <p><b>Respuesta correcta:</b> {correcta}</p>
 
