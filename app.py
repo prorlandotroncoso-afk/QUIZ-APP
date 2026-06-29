@@ -77,12 +77,19 @@ Basado en:
             quiz = json.loads(quiz_json)
         except:
             return f"<pre>Error JSON:\n{quiz_json}</pre>"
-
+            
         quiz_id = str(uuid.uuid4())
-        quizzes[quiz_id] = quiz
-
+        requests.post(
+            GOOGLE_SCRIPT_URL,
+            json={
+                "tipo": "quiz",
+                "quiz_id": quiz_id,
+                "quiz_json": json.dumps(quiz)
+            },
+            timeout=10
+        )
         link = f"{request.url_root}quiz/{quiz_id}"
-
+        
         return f"""
         <h2>✅ Quiz creado</h2>
         <p>Link para enviar:</p>
