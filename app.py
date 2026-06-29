@@ -112,10 +112,16 @@ Basado en:
 
 @app.route("/quiz/<quiz_id>", methods=["GET"])
 def quiz(quiz_id):
-    if quiz_id not in quizzes:
+    r = requests.get(
+        GOOGLE_SCRIPT_URL,
+        params={"quiz_id": quiz_id},
+        timeout=10
+    )
+    
+    if r.text == "NOT_FOUND":
         return "Quiz no encontrado"
-
-    quiz_data = quizzes[quiz_id]
+    
+    quiz = r.json()
 
     form_start = """
     <form method="post" action="/submit">
