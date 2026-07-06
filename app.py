@@ -152,7 +152,7 @@ def quiz(quiz_id):
     <input type="text" name="equipo" required><br><br>
     """
 
-    for i, q in enumerate(quiz_data):
+    for i, q in enumerate(quiz):
         body += f"<div><p><b>{q['pregunta']}</b></p>"
 
         for op in q["opciones"]:
