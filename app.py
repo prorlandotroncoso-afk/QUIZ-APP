@@ -256,6 +256,8 @@ def submit():
          "Nombre": nombre,
          "Email": email,
          "Equipo": equipo,
+         "Marca": marca,
+         "Modelo": modelo,
          "Puntaje": score,
          "Total": total,
          "Porcentaje": porcentaje,
@@ -267,6 +269,8 @@ def submit():
                 "https://script.google.com/macros/s/AKfycbybOrZVzoZYjIvagGcb7wfQwevVM93wIq4AMijPdLG82HXwXwxuC0p8pK4m-p4LACEYPg/exec",
                 json={
                     "fecha": data["Fecha"],
+                    "marca": data["Marca"],
+                    "modelo": data["Modelo"],
                     "nombre": data["Nombre"],
                     "email": data["Email"],
                     "equipo": data["Equipo"],
