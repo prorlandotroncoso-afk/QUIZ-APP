@@ -181,7 +181,16 @@ def submit():
     equipo = request.form["equipo"]
     quiz_id = request.form["quiz_id"]
 
-    quiz = quizzes.get(quiz_id)
+    r = requests.get(
+        GOOGLE_SCRIPT_URL,
+        params={"quiz_id": quiz_id},
+        timeout=10
+    )
+    
+    if r.text == "NOT_FOUND":
+        return "Quiz no encontrado"
+    
+    quiz = r.json()
     score = 0
     detalle = ""
     for i, q in enumerate(quiz):
