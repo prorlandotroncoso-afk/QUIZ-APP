@@ -32,6 +32,8 @@ quizzes = {}
 def admin():
     if request.method == "POST":
         content = request.form["content"]
+        marca = request.form["marca"]
+        modelo = request.form["modelo"]
 
         if content.startswith("http"):
             response = requests.get(content)
@@ -99,10 +101,18 @@ Basado en:
 
     return """
     <h1>🧑‍💼 PANEL ADMIN</h1>
-
+    
     <form method="post">
+    
+    <label>Marca:</label><br>
+    <input type="text" name="marca" required><br><br>
+    
+    <label>Modelo:</label><br>
+    <input type="text" name="modelo" required><br><br>
+    
     <textarea name="content" rows="10" cols="60" placeholder="Pegá texto o URL"></textarea><br><br>
     <button type="submit">Generar Evaluación</button>
+    
     </form>
     """
 
