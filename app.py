@@ -206,7 +206,11 @@ def submit():
     if r.text == "NOT_FOUND":
         return "Quiz no encontrado"
     
-    quiz = r.json()
+    data = r.json()
+    
+    marca = data["marca"]
+    modelo = data["modelo"]
+    quiz = data["quiz"]
     score = 0
     detalle = ""
     for i, q in enumerate(quiz):
