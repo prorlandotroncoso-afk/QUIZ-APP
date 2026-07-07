@@ -86,6 +86,8 @@ Basado en:
             json={
                 "tipo": "quiz",
                 "quiz_id": quiz_id,
+                "marca": marca,
+                "modelo": modelo,
                 "quiz_json": json.dumps(quiz)
             },
             timeout=10
