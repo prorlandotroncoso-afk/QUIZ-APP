@@ -133,7 +133,11 @@ def quiz(quiz_id):
     if r.text == "NOT_FOUND":
         return "Quiz no encontrado"
     
-    quiz = r.json()
+    data = r.json()
+    
+    marca = data["marca"]
+    modelo = data["modelo"]
+    quiz = data["quiz"]
 
     form_start = """
     <form method="post" action="/submit">
