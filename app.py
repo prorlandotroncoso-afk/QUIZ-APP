@@ -227,7 +227,7 @@ def submit():
             estado = "blanco"
             icono = "🟡"
             color = "#fff3cd"
-        elif respuesta_usuario == correcta:
+        elif respuesta_usuario == texto_correcto:
             score += 1
             estado = "correcta"
             icono = "🟢"
