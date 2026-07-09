@@ -216,6 +216,11 @@ def submit():
     for i, q in enumerate(quiz):
         respuesta_usuario = request.form.get(f"q{i}")
         correcta = q["correcta"]
+        indice = ord(correcta) - ord("A")
+        if 0 <= indice < len(q["opciones"]):
+            texto_correcto = q["opciones"][indice]
+        else:
+            texto_correcto = correcta
         
         # detectar en blanco
         if not respuesta_usuario:
@@ -244,7 +249,7 @@ def submit():
             
             <p><b>Tu respuesta:</b> {respuesta_usuario if respuesta_usuario else "Sin responder"}</p>
             
-            <p><b>Respuesta correcta:</b> {correcta}</p>
+            <p><b>Respuesta correcta:</b> {texto_correcto}</p>
         
         </div>
         """
