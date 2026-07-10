@@ -82,6 +82,8 @@ Ejemplos:
 
 9. Generá exactamente 15 preguntas.
 
+10. El campo "correcta" debe contener EXACTAMENTE el mismo texto que una de las opciones del arreglo "opciones". No uses letras (A, B, C, D), números ni índices.
+
 Material:
 
 {text[:8000]}
@@ -240,11 +242,7 @@ def submit():
     for i, q in enumerate(quiz):
         respuesta_usuario = request.form.get(f"q{i}")
         correcta = q["correcta"]
-        indice = ord(correcta) - ord("A")
-        if 0 <= indice < len(q["opciones"]):
-            texto_correcto = q["opciones"][indice]
-        else:
-            texto_correcto = correcta
+        texto_correcto = correcta
         
         # detectar en blanco
         if not respuesta_usuario:
