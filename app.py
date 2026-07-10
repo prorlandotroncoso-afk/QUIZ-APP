@@ -84,7 +84,7 @@ Ejemplos:
 
 Material:
 
-{text[:2000]}
+{text[:8000]}
 """
 
         response = client.chat.completions.create(
