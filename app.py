@@ -43,7 +43,8 @@ def admin():
             text = content
 
         prompt = f"""
-Respondé SOLO en JSON válido, sin texto extra.
+Respondé EXCLUSIVAMENTE en JSON válido.
+No escribas explicaciones, títulos, comentarios ni texto fuera del JSON.
 
 Formato obligatorio:
 
@@ -55,11 +56,34 @@ Formato obligatorio:
 }}
 ]
 
-No agregues explicaciones.
+INSTRUCCIONES IMPORTANTES:
 
-Generá 15 preguntas.
+1. Basate ÚNICAMENTE en la información proporcionada.
 
-Basado en:
+2. Si el material contiene UN SOLO modelo de vehículo, generá un examen normal sobre ese modelo.
+
+3. Si el material contiene DOS O MÁS modelos o versiones (por ejemplo Active, Allure, GT, etc.), distribuí las preguntas entre TODOS los modelos. Nunca concentres todas las preguntas en un solo modelo.
+
+4. Repartí las preguntas de la forma más equilibrada posible entre todas las versiones encontradas.
+
+5. Siempre que sea posible, generá preguntas COMPARATIVAS que obliguen a diferenciar un modelo de otro.
+
+Ejemplos:
+- ¿Qué versión incorpora techo panorámico?
+- ¿Cuál versión posee ADAS?
+- ¿Qué modelo equipa llantas de 18"?
+- ¿Cuál versión ofrece cámara 360°?
+
+6. Cuando una característica pertenezca únicamente a un modelo, utilizala como respuesta correcta y empleá características de los otros modelos como distractores.
+
+7. Las opciones incorrectas deben ser creíbles y surgir de la información del documento. No inventes datos.
+
+8. Evitá repetir preguntas sobre la misma característica.
+
+9. Generá exactamente 15 preguntas.
+
+Material:
+
 {text[:2000]}
 """
 
