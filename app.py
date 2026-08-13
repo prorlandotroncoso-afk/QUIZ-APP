@@ -41,7 +41,7 @@ def admin():
             text = soup.get_text()
         else:
             text = content
-
+        
         prompt = f"""
 Respondé EXCLUSIVAMENTE en JSON válido.
 No escribas explicaciones, títulos, comentarios ni texto fuera del JSON.
@@ -51,38 +51,137 @@ Formato obligatorio:
 [
 {{
 "pregunta": "texto",
-"opciones": ["A","B","C","D"],
-"correcta": "A"
+"opciones": ["texto de opción 1", "texto de opción 2", "texto de opción 3", "texto de opción 4"],
+"correcta": "texto exacto de una de las opciones"
 }}
 ]
 
 INSTRUCCIONES IMPORTANTES:
 
-1. Basate ÚNICAMENTE en la información proporcionada.
+1. Basate ÚNICAMENTE en la información proporcionada. No inventes datos, características, versiones, motorizaciones, potencias ni equipamiento.
 
-2. Si el material contiene UN SOLO modelo de vehículo, generá un examen normal sobre ese modelo.
+2. Generá exactamente 15 preguntas.
 
-3. Si el material contiene DOS O MÁS modelos o versiones (por ejemplo Active, Allure, GT, etc.), distribuí las preguntas entre TODOS los modelos. Nunca concentres todas las preguntas en un solo modelo.
+3. Cada pregunta debe tener EXACTAMENTE 4 opciones.
 
-4. Repartí las preguntas de la forma más equilibrada posible entre todas las versiones encontradas.
+4. El campo "correcta" debe contener EXACTAMENTE el mismo texto que una de las cuatro opciones del arreglo "opciones".
+No uses letras (A, B, C, D), números de índice ni referencias como "opción 1".
 
-5. Siempre que sea posible, generá preguntas COMPARATIVAS que obliguen a diferenciar un modelo de otro.
+5. El examen debe evaluar tanto conocimientos básicos como conocimientos técnicos y específicos del vehículo.
 
-Ejemplos:
+6. NO te limites a utilizar solamente la información más simple o evidente del documento. Debés buscar activamente información técnica y generar preguntas sobre ella cuando esté disponible.
+
+7. Priorizá una distribución variada de las preguntas entre las diferentes categorías de información presentes en el material.
+
+Cuando exista información suficiente, incluí preguntas sobre:
+
+- Motorización
+- Tipo de motor
+- Cilindrada
+- Potencia
+- Torque
+- Tipo y cantidad de marchas
+- Transmisión
+- Tipo de tracción
+- Suspensión
+- Dirección
+- Frenos
+- Consumo
+- Capacidad del tanque
+- Velocidad máxima
+- Aceleración
+- Dimensiones
+- Capacidad del baúl
+- Equipamiento
+- Tecnología
+- Seguridad
+- Airbags
+- ADAS y sistemas de asistencia a la conducción
+- Iluminación
+- Confort
+- Diseño
+- Diferencias entre versiones
+
+No es obligatorio utilizar todas estas categorías. Utilizá únicamente las que estén realmente presentes en la información proporcionada.
+
+8. Evitá generar demasiadas preguntas sobre una misma categoría. Por ejemplo, no generes 8 preguntas sobre iluminación dejando de lado la motorización, seguridad o transmisión si esa información está disponible.
+
+9. Si existe información técnica sobre la motorización, DEBE haber al menos una pregunta relacionada con el motor o el sistema de propulsión.
+
+10. Si existe información sobre potencia, torque, transmisión o suspensión, intentá incluir preguntas sobre esas características antes de utilizar nuevamente características de equipamiento.
+
+11. Si el material contiene UN SOLO modelo o versión, generá preguntas variadas sobre ese modelo, incluyendo tanto características generales como información técnica.
+
+12. Si el material contiene DOS O MÁS modelos o versiones, distribuí las preguntas entre TODOS los modelos de manera equilibrada.
+
+13. Cuando existan varios modelos o versiones, generá también preguntas COMPARATIVAS que permitan diferenciarlos.
+
+Por ejemplo:
+
 - ¿Qué versión incorpora techo panorámico?
-- ¿Cuál versión posee ADAS?
-- ¿Qué modelo equipa llantas de 18"?
-- ¿Cuál versión ofrece cámara 360°?
+- ¿Qué versión tiene mayor potencia?
+- ¿Qué versiones utilizan el motor T200?
+- ¿Qué versión incorpora cámara 360°?
+- ¿Qué versiones cuentan con determinado sistema de seguridad?
 
-6. Cuando una característica pertenezca únicamente a un modelo, utilizala como respuesta correcta y empleá características de los otros modelos como distractores.
+14. Cuando una característica pertenezca a MÁS DE UN modelo, la respuesta correcta puede contener una combinación de modelos.
 
-7. Las opciones incorrectas deben ser creíbles y surgir de la información del documento. No inventes datos.
+Por ejemplo, si Active y Allure tienen determinada característica:
 
-8. Evitá repetir preguntas sobre la misma característica.
+"opciones": [
+    "Active",
+    "Allure",
+    "GT",
+    "Active y Allure"
+],
+"correcta": "Active y Allure"
 
-9. Generá exactamente 15 preguntas.
+15. Si una característica pertenece a TODOS los modelos, podés utilizar una respuesta que incluya todos los modelos.
 
-10. El campo "correcta" debe contener EXACTAMENTE el mismo texto que una de las opciones del arreglo "opciones". No uses letras (A, B, C, D), números ni índices.
+Por ejemplo:
+
+"opciones": [
+    "Active",
+    "Allure",
+    "GT",
+    "Active, Allure y GT"
+],
+"correcta": "Active, Allure y GT"
+
+16. Las combinaciones de modelos deben basarse ÚNICAMENTE en la información proporcionada. No inventes que dos o tres versiones comparten una característica si el documento no lo indica.
+
+17. Cuando una característica pertenezca únicamente a una versión, la respuesta correcta debe ser esa versión.
+
+18. Las opciones incorrectas deben ser plausibles y estar basadas en información real del documento. No inventes especificaciones para crear distractores.
+
+19. Evitá repetir preguntas sobre la misma característica.
+
+20. Variá la dificultad de las preguntas.
+
+Incluí preguntas de:
+
+- Conocimiento directo: identificar una característica concreta.
+- Diferenciación: distinguir entre dos o más versiones.
+- Comparación: determinar qué versión o versiones poseen determinada característica.
+- Conocimiento técnico: interpretar correctamente datos de motor, potencia, torque, transmisión, suspensión, seguridad u otras especificaciones.
+
+21. Cuando existan datos numéricos importantes, utilizalos para generar preguntas. Por ejemplo, potencia, torque, cilindrada, capacidad de baúl, capacidad de tanque, dimensiones, velocidad máxima, cantidad de marchas, etc.
+
+22. No descartes una información técnica simplemente porque sea más compleja. Si está presente en el material, debe considerarse para la generación del examen.
+
+23. Las preguntas deben estar redactadas de manera clara y profesional, como un examen de capacitación para vendedores de vehículos.
+
+24. Antes de generar el JSON final, verificá internamente que:
+
+- Hay exactamente 15 preguntas.
+- Cada pregunta tiene exactamente 4 opciones.
+- "correcta" coincide exactamente con una de las 4 opciones.
+- No hay preguntas repetidas.
+- Se utilizaron diferentes categorías de información cuando están disponibles.
+- Si existen varios modelos, todos fueron considerados.
+- Si una característica pertenece a varios modelos, se consideró la posibilidad de una respuesta combinada.
+- Si existe información de motorización, se incluyeron preguntas técnicas sobre ella.
+- No se inventó ninguna información.
 
 Material:
 
