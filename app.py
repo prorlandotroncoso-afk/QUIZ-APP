@@ -470,7 +470,7 @@ def admin():
                 return page_html("Error", error_content)
         else:
             text = content
-
+        
         prompt = f"""
 Respondé EXCLUSIVAMENTE en JSON válido.
 No escribas explicaciones, títulos, comentarios ni texto fuera del JSON.
@@ -480,137 +480,45 @@ Formato obligatorio:
 [
 {{
 "pregunta": "texto",
-"opciones": ["texto de opción 1", "texto de opción 2", "texto de opción 3", "texto de opción 4"],
+"opciones": ["opción 1", "opción 2", "opción 3", "opción 4"],
 "correcta": "texto exacto de una de las opciones"
 }}
 ]
 
-INSTRUCCIONES IMPORTANTES:
+REGLAS:
 
-1. Basate ÚNICAMENTE en la información proporcionada. No inventes datos, características, versiones, motorizaciones, potencias ni equipamiento.
+1. Basate ÚNICAMENTE en la información proporcionada. No inventes datos, características, versiones, motorizaciones, potencias, equipamiento ni combinaciones de versiones.
 
-2. Generá exactamente 15 preguntas.
+2. Generá EXACTAMENTE 15 preguntas.
 
 3. Cada pregunta debe tener EXACTAMENTE 4 opciones.
 
-4. El campo "correcta" debe contener EXACTAMENTE el mismo texto que una de las cuatro opciones del arreglo "opciones".
-No uses letras (A, B, C, D), números de índice ni referencias como "opción 1".
+4. El campo "correcta" debe coincidir EXACTAMENTE con una de las 4 opciones. No uses A, B, C, D, índices ni referencias como "opción 1".
 
-5. El examen debe evaluar tanto conocimientos básicos como conocimientos técnicos y específicos del vehículo.
+5. Evitá preguntas repetidas y distribuí el examen entre distintas categorías presentes en el material.
 
-6. NO te limites a utilizar solamente la información más simple o evidente del documento. Debés buscar activamente información técnica y generar preguntas sobre ella cuando esté disponible.
+6. Cuando exista información técnica, priorizala. Podés incluir preguntas sobre motor, cilindrada, potencia, torque, transmisión, marchas, tracción, suspensión, dirección, frenos, consumo, tanque, velocidad, aceleración, dimensiones, baúl, seguridad, airbags, ADAS, tecnología, equipamiento, iluminación, confort y diseño.
 
-7. Priorizá una distribución variada de las preguntas entre las diferentes categorías de información presentes en el material.
+7. Si existen datos numéricos importantes, utilizalos en algunas preguntas.
 
-Cuando exista información suficiente, incluí preguntas sobre:
+8. Si el material contiene un solo modelo o versión, combiná preguntas generales y técnicas.
 
-- Motorización
-- Tipo de motor
-- Cilindrada
-- Potencia
-- Torque
-- Tipo y cantidad de marchas
-- Transmisión
-- Tipo de tracción
-- Suspensión
-- Dirección
-- Frenos
-- Consumo
-- Capacidad del tanque
-- Velocidad máxima
-- Aceleración
-- Dimensiones
-- Capacidad del baúl
-- Equipamiento
-- Tecnología
-- Seguridad
-- Airbags
-- ADAS y sistemas de asistencia a la conducción
-- Iluminación
-- Confort
-- Diseño
-- Diferencias entre versiones
+9. Si contiene varias versiones o modelos, distribuí las preguntas entre todos de manera equilibrada y agregá preguntas comparativas cuando el material lo permita.
 
-No es obligatorio utilizar todas estas categorías. Utilizá únicamente las que estén realmente presentes en la información proporcionada.
+10. Si una característica pertenece a varias versiones, la respuesta correcta puede ser una combinación de ellas, pero SOLO si el material lo demuestra.
 
-8. Evitá generar demasiadas preguntas sobre una misma categoría. Por ejemplo, no generes 8 preguntas sobre iluminación dejando de lado la motorización, seguridad o transmisión si esa información está disponible.
+11. Las opciones incorrectas deben ser plausibles y basarse en información real del material. No inventes especificaciones para crear distractores.
 
-9. Si existe información técnica sobre la motorización, DEBE haber al menos una pregunta relacionada con el motor o el sistema de propulsión.
+12. Variá la dificultad entre conocimiento directo, diferenciación, comparación y conocimiento técnico.
 
-10. Si existe información sobre potencia, torque, transmisión o suspensión, intentá incluir preguntas sobre esas características antes de utilizar nuevamente características de equipamiento.
-
-11. Si el material contiene UN SOLO modelo o versión, generá preguntas variadas sobre ese modelo, incluyendo tanto características generales como información técnica.
-
-12. Si el material contiene DOS O MÁS modelos o versiones, distribuí las preguntas entre TODOS los modelos de manera equilibrada.
-
-13. Cuando existan varios modelos o versiones, generá también preguntas COMPARATIVAS que permitan diferenciarlos.
-
-Por ejemplo:
-
-- ¿Qué versión incorpora techo panorámico?
-- ¿Qué versión tiene mayor potencia?
-- ¿Qué versiones utilizan el motor T200?
-- ¿Qué versión incorpora cámara 360°?
-- ¿Qué versiones cuentan con determinado sistema de seguridad?
-
-14. Cuando una característica pertenezca a MÁS DE UN modelo, la respuesta correcta puede contener una combinación de modelos.
-
-Por ejemplo, si Active y Allure tienen determinada característica:
-
-"opciones": [
-    "Active",
-    "Allure",
-    "GT",
-    "Active y Allure"
-],
-"correcta": "Active y Allure"
-
-15. Si una característica pertenece a TODOS los modelos, podés utilizar una respuesta que incluya todos los modelos.
-
-Por ejemplo:
-
-"opciones": [
-    "Active",
-    "Allure",
-    "GT",
-    "Active, Allure y GT"
-],
-"correcta": "Active, Allure y GT"
-
-16. Las combinaciones de modelos deben basarse ÚNICAMENTE en la información proporcionada. No inventes que dos o tres versiones comparten una característica si el documento no lo indica.
-
-17. Cuando una característica pertenezca únicamente a una versión, la respuesta correcta debe ser esa versión.
-
-18. Las opciones incorrectas deben ser plausibles y estar basadas en información real del documento. No inventes especificaciones para crear distractores.
-
-19. Evitá repetir preguntas sobre la misma característica.
-
-20. Variá la dificultad de las preguntas.
-
-Incluí preguntas de:
-
-- Conocimiento directo: identificar una característica concreta.
-- Diferenciación: distinguir entre dos o más versiones.
-- Comparación: determinar qué versión o versiones poseen determinada característica.
-- Conocimiento técnico: interpretar correctamente datos de motor, potencia, torque, transmisión, suspensión, seguridad u otras especificaciones.
-
-21. Cuando existan datos numéricos importantes, utilizalos para generar preguntas. Por ejemplo, potencia, torque, cilindrada, capacidad de baúl, capacidad de tanque, dimensiones, velocidad máxima, cantidad de marchas, etc.
-
-22. No descartes una información técnica simplemente porque sea más compleja. Si está presente en el material, debe considerarse para la generación del examen.
-
-23. Las preguntas deben estar redactadas de manera clara y profesional, como un examen de capacitación para vendedores de vehículos.
-
-24. Antes de generar el JSON final, verificá internamente que:
-
-- Hay exactamente 15 preguntas.
-- Cada pregunta tiene exactamente 4 opciones.
-- "correcta" coincide exactamente con una de las 4 opciones.
-- No hay preguntas repetidas.
-- Se utilizaron diferentes categorías de información cuando están disponibles.
-- Si existen varios modelos, todos fueron considerados.
-- Si una característica pertenece a varios modelos, se consideró la posibilidad de una respuesta combinada.
-- Si existe información de motorización, se incluyeron preguntas técnicas sobre ella.
-- No se inventó ninguna información.
+13. Antes de responder, verificá internamente:
+- que haya exactamente 15 preguntas;
+- que cada pregunta tenga 4 opciones;
+- que "correcta" coincida exactamente con una de las opciones;
+- que no haya preguntas repetidas;
+- que se hayan usado distintas categorías cuando estén disponibles;
+- que, si hay varias versiones, todas hayan sido consideradas;
+- que no se haya inventado ninguna información.
 
 Material:
 
@@ -622,7 +530,7 @@ Material:
                 model=MODEL_NAME,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.2,
-                max_tokens=6000
+                max_tokens=2500
             )
         except Exception as e:
             error_content = f"""
