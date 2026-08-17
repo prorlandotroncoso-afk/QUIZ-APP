@@ -614,7 +614,7 @@ Incluí preguntas de:
 
 Material:
 
-{text[:5500]}
+{text[:8000]}
 """
 
         try:
