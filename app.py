@@ -13,12 +13,12 @@ app = Flask(__name__)
 # =========================
 # 🔑 API KEY SEGURA (desde Render)
 # =========================
-api_key = xxxxxx
+api_key = os.environ.get("GROQ_API_KEY")
 
 if not api_key:
     raise ValueError("Falta la API KEY de Groq en Render")
 
-client = Groq(xxxxxx)
+client = Groq(api_key=api_key)
 
 GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybOrZVzoZYjIvagGcb7wfQwevVM93wIq4AMijPdLG82HXwXwxuC0p8pK4m-p4LACEYPg/exec"
 # almacenamiento temporal
