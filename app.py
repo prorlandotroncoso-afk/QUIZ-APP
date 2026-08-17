@@ -23,7 +23,7 @@ client = Groq(api_key=api_key)
 # =========================
 # ⚙️ CONFIGURACIÓN
 # =========================
-MODEL_NAME = "openai/gpt-oss-20b"
+MODEL_NAME = "qwen/qwen3.6-27b"
 
 GOOGLE_SCRIPT_URL = os.environ.get(
     "GOOGLE_SCRIPT_URL",
