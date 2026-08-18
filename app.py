@@ -523,6 +523,7 @@ Material:
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.1,
                     max_tokens=1800,
+                    reasoning_effort="none"
                 )
             except Exception as e:
                 error_content = f"""
