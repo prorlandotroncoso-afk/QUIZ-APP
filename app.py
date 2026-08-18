@@ -941,10 +941,17 @@ def submit():
     {detalle}
 
     <p class="footer-note">Resultado registrado · {html.escape(result_data["Fecha"])}</p>
+    <script>
+       history.replaceState(null, "", window.location.href);
+       history.pushState(null, "", window.location.href);
+       
+       window.addEventListener("popstate", function () {{
+         history.pushState(null, "", window.location.href);
+       }});
+    
+    </script>
     """
-
     return page_html("Resultado del examen", summary_content)
-
 
 # =========================
 # 🚀 START
