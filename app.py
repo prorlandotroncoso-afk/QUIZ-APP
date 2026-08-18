@@ -760,7 +760,7 @@ def quiz(quiz_id):
         </div>
     </section>
 
-    <form method="post" action="/submit">
+    <form method="post" action="/submit" onsubmit="bloquearRegresoAlQuiz()">
         <section class="glass card">
             <div class="form-grid">
                 <div class="field">
@@ -788,9 +788,32 @@ def quiz(quiz_id):
             <button class="btn" type="submit">Enviar respuestas</button>
         </section>
     </form>
+
+    <script>
+    function bloquearRegresoAlQuiz() {{
+        history.replaceState(null, "", "/quiz-finalizado");
+    }}
+    </script>
     """
 
     return page_html(f"Evaluación - {marca} {modelo}", quiz_content)
+
+
+# =========================
+# ✅ EVALUACIÓN FINALIZADA
+# =========================
+@app.route("/quiz-finalizado")
+def quiz_finalizado():
+    content = """
+    <section class="glass hero">
+        <span class="eyebrow">Evaluación finalizada</span>
+        <h1>Esta evaluación ya fue enviada</h1>
+        <p class="subtitle">
+            No es posible volver a las preguntas desde esta pantalla.
+        </p>
+    </section>
+    """
+    return page_html("Evaluación finalizada", content)
 
 
 # =========================
@@ -941,15 +964,6 @@ def submit():
     {detalle}
 
     <p class="footer-note">Resultado registrado · {html.escape(result_data["Fecha"])}</p>
-    <script>
-       history.replaceState(null, "", window.location.href);
-       history.pushState(null, "", window.location.href);
-       
-       window.addEventListener("popstate", function () {{
-         history.pushState(null, "", window.location.href);
-       }});
-    
-    </script>
     """
     return page_html("Resultado del examen", summary_content)
 
