@@ -788,11 +788,22 @@ def quiz(quiz_id):
             <button class="btn" type="submit">Enviar respuestas</button>
         </section>
     </form>
-
     <script>
     function bloquearRegresoAlQuiz() {{
-        history.replaceState(null, "", "/quiz-finalizado");
+        sessionStorage.setItem(
+            "quiz_respondido_{quiz_id}",
+            "true"
+        );
     }}
+    window.addEventListener("pageshow", function () {{
+        if (
+            sessionStorage.getItem(
+                "quiz_respondido_{quiz_id}"
+            ) === "true"
+        ) {{
+            window.location.replace("/quiz-finalizado");
+        }}
+    }});
     </script>
     """
 
