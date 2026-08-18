@@ -471,145 +471,133 @@ def admin():
         else:
             text = content
         
-        prompt = f"""
-Respondé EXCLUSIVAMENTE en JSON válido.
-No escribas explicaciones, títulos, comentarios ni texto fuera del JSON.
+        # Generamos el quiz en 3 bloques de 5 preguntas.
+        # Esto reduce el tamaño de cada respuesta y evita que Qwen corte el JSON.
+        quiz = []
+        preguntas_previas = []
+
+        for bloque in range(3):
+            previas_texto = "\n".join(
+                f"- {q['pregunta']}" for q in preguntas_previas
+            ) if preguntas_previas else "Ninguna."
+
+            prompt = f"""
+Respondé EXCLUSIVAMENTE con JSON válido.
+No uses Markdown, títulos, comentarios ni texto fuera del JSON.
 
 Formato obligatorio:
-
-[
 {{
-"pregunta": "texto",
-"opciones": ["opción 1", "opción 2", "opción 3", "opción 4"],
-"correcta": "texto exacto de una de las opciones"
+  "preguntas": [
+    {{
+      "pregunta": "texto",
+      "opciones": ["opción 1", "opción 2", "opción 3", "opción 4"],
+      "correcta": "texto exacto de una de las opciones"
+    }}
+  ]
 }}
-]
 
 REGLAS:
+1. Generá EXACTAMENTE 5 preguntas nuevas usando ÚNICAMENTE el material proporcionado.
+2. Cada pregunta debe tener EXACTAMENTE 4 opciones.
+3. "correcta" debe coincidir EXACTAMENTE con una de las 4 opciones.
+4. No inventes datos, especificaciones, versiones, equipamiento ni combinaciones.
+5. No repitas ninguna pregunta de la lista de preguntas ya generadas.
+6. Distribuí las preguntas entre categorías distintas cuando el material lo permita.
+7. Priorizá información técnica disponible: motor, cilindrada, potencia, torque, transmisión, marchas, tracción, suspensión, dirección, frenos, consumo, tanque, velocidad, aceleración, dimensiones, baúl, seguridad, airbags, ADAS, tecnología, equipamiento, iluminación, confort y diseño.
+8. Usá datos numéricos relevantes cuando estén presentes.
+9. Si hay varias versiones/modelos, repartí las preguntas entre ellas y comparalas cuando el material lo permita.
+10. Las opciones incorrectas deben ser plausibles y basarse en información del material.
+11. Variá la dificultad entre conocimiento directo, diferenciación, comparación y conocimiento técnico.
+12. Antes de responder verificá: exactamente 5 preguntas, 4 opciones por pregunta, "correcta" incluida entre las opciones, sin repeticiones y sin información inventada.
 
-1. Basate ÚNICAMENTE en la información proporcionada. No inventes datos, características, versiones, motorizaciones, potencias, equipamiento ni combinaciones de versiones.
-
-2. Generá EXACTAMENTE 15 preguntas.
-
-3. Cada pregunta debe tener EXACTAMENTE 4 opciones.
-
-4. El campo "correcta" debe coincidir EXACTAMENTE con una de las 4 opciones. No uses A, B, C, D, índices ni referencias como "opción 1".
-
-5. Evitá preguntas repetidas y distribuí el examen entre distintas categorías presentes en el material.
-
-6. Cuando exista información técnica, priorizala. Podés incluir preguntas sobre motor, cilindrada, potencia, torque, transmisión, marchas, tracción, suspensión, dirección, frenos, consumo, tanque, velocidad, aceleración, dimensiones, baúl, seguridad, airbags, ADAS, tecnología, equipamiento, iluminación, confort y diseño.
-
-7. Si existen datos numéricos importantes, utilizalos en algunas preguntas.
-
-8. Si el material contiene un solo modelo o versión, combiná preguntas generales y técnicas.
-
-9. Si contiene varias versiones o modelos, distribuí las preguntas entre todos de manera equilibrada y agregá preguntas comparativas cuando el material lo permita.
-
-10. Si una característica pertenece a varias versiones, la respuesta correcta puede ser una combinación de ellas, pero SOLO si el material lo demuestra.
-
-11. Las opciones incorrectas deben ser plausibles y basarse en información real del material. No inventes especificaciones para crear distractores.
-
-12. Variá la dificultad entre conocimiento directo, diferenciación, comparación y conocimiento técnico.
-
-13. Antes de responder, verificá internamente:
-- que haya exactamente 15 preguntas;
-- que cada pregunta tenga 4 opciones;
-- que "correcta" coincida exactamente con una de las opciones;
-- que no haya preguntas repetidas;
-- que se hayan usado distintas categorías cuando estén disponibles;
-- que, si hay varias versiones, todas hayan sido consideradas;
-- que no se haya inventado ninguna información.
+Preguntas ya generadas que NO debés repetir:
+{previas_texto}
 
 Material:
-
 {text[:4000]}
 """
 
-        try:
-            response = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.2,
-                max_tokens=2500
-            )
-        except Exception as e:
+            try:
+                response = client.chat.completions.create(
+                    model=MODEL_NAME,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.1,
+                    max_tokens=1800,
+                    response_format={"type": "json_object"}
+                )
+            except Exception as e:
+                error_content = f"""
+                <section class="glass hero">
+                    <span class="eyebrow">Error de IA</span>
+                    <h1>No pude generar el bloque {bloque + 1} del quiz</h1>
+                    <p class="subtitle">{html.escape(str(e))}</p>
+                    <a href="/admin">← Volver al panel</a>
+                </section>
+                """
+                return page_html("Error de IA", error_content)
+
+            raw_output = response.choices[0].message.content.strip()
+
+            try:
+                bloque_data = json.loads(raw_output)
+                preguntas_bloque = bloque_data.get("preguntas", [])
+            except Exception:
+                safe_output = html.escape(raw_output)
+                error_content = f"""
+                <section class="glass hero">
+                    <span class="eyebrow">Error JSON</span>
+                    <h1>No pude interpretar el bloque {bloque + 1}</h1>
+                    <p class="subtitle">La IA no devolvió JSON válido. Volvé a generar la evaluación.</p>
+                </section>
+                <section class="glass card">
+                    <pre style="white-space:pre-wrap;overflow:auto;">{safe_output}</pre>
+                </section>
+                """
+                return page_html("Error JSON", error_content)
+
+            if not isinstance(preguntas_bloque, list) or len(preguntas_bloque) != 5:
+                error_content = f"""
+                <section class="glass hero">
+                    <span class="eyebrow">Validación</span>
+                    <h1>El bloque {bloque + 1} salió incompleto</h1>
+                    <p class="subtitle">Se generaron {len(preguntas_bloque) if isinstance(preguntas_bloque, list) else 0} preguntas en lugar de 5. Probá nuevamente.</p>
+                    <a href="/admin">← Volver al panel</a>
+                </section>
+                """
+                return page_html("Bloque incompleto", error_content)
+
+            for q in preguntas_bloque:
+                if (
+                    not isinstance(q, dict)
+                    or not q.get("pregunta")
+                    or not isinstance(q.get("opciones"), list)
+                    or len(q.get("opciones", [])) != 4
+                    or q.get("correcta") not in q.get("opciones", [])
+                ):
+                    error_content = f"""
+                    <section class="glass hero">
+                        <span class="eyebrow">Validación</span>
+                        <h1>Una pregunta del bloque {bloque + 1} salió con formato inválido</h1>
+                        <p class="subtitle">No se publicó el quiz para evitar errores. Volvé a generarlo.</p>
+                        <a href="/admin">← Volver al panel</a>
+                    </section>
+                    """
+                    return page_html("Quiz inválido", error_content)
+
+            quiz.extend(preguntas_bloque)
+            preguntas_previas.extend(preguntas_bloque)
+
+        # Validación final antes de crear el link compartible.
+        if len(quiz) != 15:
             error_content = f"""
             <section class="glass hero">
-                <span class="eyebrow">Error de IA</span>
-                <h1>No pude generar el quiz</h1>
-                <p class="subtitle">{html.escape(str(e))}</p>
-                <a href="/admin">← Volver al panel</a>
-            </section>
-            """
-            return page_html("Error de IA", error_content)
-
-        quiz_json = response.choices[0].message.content.strip()
-
-        # Limpieza automática: toma solamente el array JSON.
-        start = quiz_json.find("[")
-        end = quiz_json.rfind("]") + 1
-
-        if start == -1 or end <= start:
-            safe_output = html.escape(quiz_json)
-            error_content = f"""
-            <section class="glass hero">
-                <span class="eyebrow">Formato inesperado</span>
-                <h1>La IA no devolvió el quiz en el formato esperado</h1>
-                <p class="subtitle">Volvé a intentarlo. Si se repite, revisá el material ingresado.</p>
-            </section>
-            <section class="glass card">
-                <pre style="white-space:pre-wrap;overflow:auto;">{safe_output}</pre>
-            </section>
-            """
-            return page_html("Error de formato", error_content)
-
-        quiz_json = quiz_json[start:end]
-
-        try:
-            quiz = json.loads(quiz_json)
-        except Exception:
-            safe_output = html.escape(quiz_json)
-            error_content = f"""
-            <section class="glass hero">
-                <span class="eyebrow">Error JSON</span>
-                <h1>No pude interpretar las preguntas generadas</h1>
-                <p class="subtitle">Volvé a generar la evaluación.</p>
-            </section>
-            <section class="glass card">
-                <pre style="white-space:pre-wrap;overflow:auto;">{safe_output}</pre>
-            </section>
-            """
-            return page_html("Error JSON", error_content)
-
-        # Validación mínima para evitar publicar un quiz roto.
-        if not isinstance(quiz, list) or len(quiz) != 15:
-            error_content = f"""
-            <section class="glass hero">
-                <span class="eyebrow">Validación</span>
+                <span class="eyebrow">Validación final</span>
                 <h1>El quiz no salió completo</h1>
-                <p class="subtitle">Se generaron {len(quiz) if isinstance(quiz, list) else 0} preguntas en lugar de 15. Probá nuevamente.</p>
+                <p class="subtitle">Se generaron {len(quiz)} preguntas en lugar de 15. Probá nuevamente.</p>
                 <a href="/admin">← Volver al panel</a>
             </section>
             """
             return page_html("Quiz incompleto", error_content)
-
-        for q in quiz:
-            if (
-                not isinstance(q, dict)
-                or not isinstance(q.get("opciones"), list)
-                or len(q.get("opciones", [])) != 4
-                or q.get("correcta") not in q.get("opciones", [])
-                or not q.get("pregunta")
-            ):
-                error_content = """
-                <section class="glass hero">
-                    <span class="eyebrow">Validación</span>
-                    <h1>Una pregunta salió con un formato inválido</h1>
-                    <p class="subtitle">No se publicó el quiz para evitar errores. Volvé a generarlo.</p>
-                    <a href="/admin">← Volver al panel</a>
-                </section>
-                """
-                return page_html("Quiz inválido", error_content)
 
         quiz_id = str(uuid.uuid4())
 
