@@ -635,7 +635,7 @@ Material:
         <span class="eyebrow">Quiz Generator</span>
         <h1>Creá una evaluación en minutos</h1>
         <p class="subtitle">
-            Pegá una URL o el contenido técnico del vehículo. La IA genera 15 preguntas
+            Pegá el contenido técnico del vehículo. La IA genera 15 preguntas
             y deja el quiz listo para compartir.
         </p>
     </section>
@@ -657,7 +657,7 @@ Material:
                     <label>Información para generar el quiz</label>
                     <textarea
                         name="content"
-                        placeholder="Pegá aquí el texto técnico o una URL..."
+                        placeholder="Pegá aquí el texto técnico..."
                         required
                     ></textarea>
                 </div>
